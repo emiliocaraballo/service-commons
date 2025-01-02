@@ -8,6 +8,7 @@ import {
 import { to } from 'await-to-js';
 import { JwtService } from '@nestjs/jwt';
 import { customThrowError } from '../filters/errorsFilter/customThrowError';
+import constants from '../constants';
 
 // Interfaces
 
@@ -36,7 +37,7 @@ export class AuthGuard implements CanActivate {
   public async validateToken(accessToken: string) {
     try {
       const decoded = await this.jwtService.verifyAsync(accessToken, {
-        secret: process.env.API_TOKEN_KEY_VALUE,
+        secret: constants.API_TOKEN_KEY_VALUE,
       });
       return decoded;
     } catch (err) {
