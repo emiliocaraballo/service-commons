@@ -20,6 +20,8 @@ import { Role } from './roles/role.enum';
 
 // Interfaces
 import { IRequest, ITokenUserData } from './interfaces';
+// Filters
+import { HttpExceptionFilter } from './filters';
 
 export {
   CustomerAuth,
@@ -34,4 +36,5 @@ export {
   Role,
   IRequest,
   ITokenUserData,
+  HttpExceptionFilter,
 };
