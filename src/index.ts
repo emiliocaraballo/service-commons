@@ -24,6 +24,11 @@ import { IRequest, ITokenUserData } from './interfaces';
 import { HttpExceptionFilter } from './filters';
 import { customThrowError } from './filters/errorsFilter/customThrowError';
 
+// Pipes
+import { JoiValidationPipe } from './pipes';
+import { JoiValidationPipeMicroservices } from './pipes/joiValidationPipeMicroservices';
+import { TrimPipe } from './pipes/trimStrings';
+
 export {
   CustomerAuth,
   CustomerPublicAuth,
@@ -39,4 +44,7 @@ export {
   ITokenUserData,
   HttpExceptionFilter,
   customThrowError,
+  JoiValidationPipe,
+  JoiValidationPipeMicroservices,
+  TrimPipe,
 };
