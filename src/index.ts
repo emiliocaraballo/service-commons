@@ -1,8 +1,37 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
+// Auth decorators
+import {
+  CustomerAuth,
+  CustomerPublicAuth,
+  CustomerPublic,
+  ManyRolesAuth,
+  GeneralDecorators,
+} from './auth-decorators';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
-}
-bootstrap();
+// Guards
+import {
+  AuthGuard,
+  RolesGuard,
+  PublicAuthGuard,
+  PublicRolesGuard,
+} from './guards';
+
+// Roles
+import { Role } from './roles/role.enum';
+
+// Interfaces
+import { IRequest, ITokenUserData } from './interfaces';
+
+export {
+  CustomerAuth,
+  CustomerPublicAuth,
+  CustomerPublic,
+  ManyRolesAuth,
+  GeneralDecorators,
+  AuthGuard,
+  RolesGuard,
+  PublicAuthGuard,
+  PublicRolesGuard,
+  Role,
+  IRequest,
+  ITokenUserData,
+};
