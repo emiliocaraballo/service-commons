@@ -5,8 +5,8 @@ export interface IRequest {
   };
 }
 export interface ITokenUserData {
-  id: number; // Id user
-  rol?: 'CUSTOMER' | 'ADMIN' | 'SUPER_ADMIN'; // Role user
+  sub: number; // Id user
+  rol?: 'CUSTOMER' | 'ADMIN'; // Role user
   iat?: number;
   exp?: number;
   createdAtToken: string;

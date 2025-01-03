@@ -19,7 +19,6 @@ export class HttpExceptionFilter implements ExceptionFilter {
   }
 
   async catch(exception: HttpException, host: ArgumentsHost) {
-    // Default error message obj
     const defaultErrorMessage = {
       code: 'UNEXPECTED_ERROR',
       description: 'Ha ocurrido un error inesperado',
@@ -31,37 +30,19 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const status = exception.getStatus();
 
     try {
-      // Get response error data
+      // Obtener datos del error
       const responseError = exception.getResponse() as IErrorData;
 
-      // Remove password error
+      // Eliminar datos sensibles
       delete request?.body?.password;
 
-      //   getErrorLogger(this.currentMicroservice)?.error({
-      //     ...responseError,
-      //     message: responseError?.message,
-      //     statusCode: status || 500,
-      //     path: request.url,
-      //     method: request.method,
-      //     body: JSON.stringify(request.body),
-      //     params: JSON.stringify(request.params),
-      //     currentMicroservice: this.currentMicroservice,
-      //     exception: JSON.stringify(exception),
-      //   });
       console.error('responseError =>', responseError);
 
-      // Get message from database
-
-      // Return default error message
-      if (responseError) {
-        response.status(status).json({
-          ...responseError,
-          statusCode: status || 500,
-          path: request.url,
-        });
+      if (responseError?.message && !responseError?.description) {
+        responseError.description = responseError?.message;
       }
 
-      // SET data from errorMessage table
+      // Construir datos del mensaje de error
       const errorMessageData: IErrorData = {
         code: responseError?.code || defaultErrorMessage.code,
         description:
@@ -70,6 +51,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
         additionalData: responseError?.additionalData,
       };
 
+      // Enviar la respuesta (solo una vez)
       response.status(status).json({
         ...errorMessageData,
         statusCode: status || 500,
@@ -77,11 +59,15 @@ export class HttpExceptionFilter implements ExceptionFilter {
       });
     } catch (errorFilter) {
       console.error('errorFilter =>', errorFilter);
-      response.status(status).json({
-        ...defaultErrorMessage,
-        statusCode: status || 500,
-        path: request.url,
-      });
+
+      // Enviar respuesta en caso de error inesperado (solo una vez)
+      if (!response.headersSent) {
+        response.status(status).json({
+          ...defaultErrorMessage,
+          statusCode: status || 500,
+          path: request.url,
+        });
+      }
     }
   }
 }
